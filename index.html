@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7903435708794735"
+     crossorigin="anonymous"></script>
+<meta name="google-adsense-account" content="ca-pub-7903435708794735">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📚 OX 퀴즈 마스터</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0c1a;
+    --surface: #1a1630;
+    --card: #221e3a;
+    --border: #3a3460;
+    --accent: #7c4dff;
+    --accent2: #00e5ff;
+    --accent3: #ff4081;
+    --gold: #ffd740;
+    --text: #e8e4ff;
+    --muted: #9992cc;
+    --correct: #00e676;
+    --wrong: #ff1744;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── BACKGROUND ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(124,77,255,.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(0,229,255,.12) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── AD BANNERS ─── */
+  .ad-banner {
+    width: 100%;
+    background: linear-gradient(135deg, #1a1630 0%, #221e3a 100%);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    padding: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 10;
+  }
+  .ad-banner.bottom { border-top: 1px solid var(--border); border-bottom: none; }
+  .ad-box {
+    width: 100%; max-width: 728px;
+    min-height: 90px;
+    background: linear-gradient(135deg, #2a2448, #1e1a35);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ─── WRAPPER ─── */
+  .wrapper {
+    position: relative; z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+  }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    text-align: center;
+    padding: 30px 0 24px;
+    animation: fadeDown .6s ease;
+  }
+  .site-header h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: 2px;
+  }
+  .site-header p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
+  /* ─── TABS ─── */
+  .tabs {
+    display: flex; gap: 8px; margin-bottom: 24px;
+    overflow-x: auto; padding-bottom: 4px;
+  }
+  .tab-btn {
+    flex: 1; min-width: 80px;
+    padding: 10px 6px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    transition: all .25s;
+    white-space: nowrap;
+  }
+  .tab-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(124,77,255,.4);
+  }
+  .tab-btn:hover:not(.active) {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  /* ─── SECTION CARDS ─── */
+  .section { display: none; animation: fadeIn .4s ease; }
+  .section.active { display: block; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  /* ─── SUBJECT GRID ─── */
+  .subject-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .subject-btn {
+    padding: 28px 16px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    transition: all .3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .subject-btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    opacity: 0;
+    transition: opacity .3s;
+  }
+  .subject-btn:nth-child(1)::before { background: linear-gradient(135deg,rgba(255,64,129,.15),rgba(255,64,129,.05)); }
+  .subject-btn:nth-child(2)::before { background: linear-gradient(135deg,rgba(255,215,64,.15),rgba(255,215,64,.05)); }
+  .subject-btn:nth-child(3)::before { background: linear-gradient(135deg,rgba(0,229,255,.15),rgba(0,229,255,.05)); }
+  .subject-btn:nth-child(4)::before { background: linear-gradient(135deg,rgba(0,230,118,.15),rgba(0,230,118,.05)); }
+  .subject-btn:hover::before { opacity: 1; }
+  .subject-btn:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,.4); }
+  .subject-btn .emoji { font-size: 2.4rem; display: block; margin-bottom: 10px; }
+  .subject-btn .count { font-size: 11px; color: var(--muted); font-weight: 400; margin-top: 4px; }
+
+  /* ─── QUIZ AREA ─── */
+  #quizArea { display: none; }
+
+  .quiz-header {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+    margin-bottom: 20px;
+  }
+  .quiz-subject-label {
+    font-size: 13px; color: var(--accent2);
+    font-weight: 700; letter-spacing: 1px;
+  }
+  .quiz-progress {
+    font-size: 13px; color: var(--muted);
+  }
+
+  /* TIMER */
+  .timer-wrap {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .timer-circle {
+    width: 64px; height: 64px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .timer-circle svg { transform: rotate(-90deg); }
+  .timer-circle circle {
+    fill: none; stroke-width: 5;
+  }
+  .timer-circle .bg { stroke: var(--border); }
+  .timer-circle .fg { stroke: var(--accent2); stroke-linecap: round; transition: stroke-dashoffset .9s linear; }
+  .timer-num {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px; font-weight: 700;
+    color: var(--accent2);
+  }
+
+  /* PROGRESS BAR */
+  .prog-bar-wrap {
+    background: var(--border); border-radius: 99px;
+    height: 6px; overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .prog-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 99px;
+    transition: width .4s ease;
+  }
+
+  /* QUESTION CARD */
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .q-num {
+    font-size: 11px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+  .q-text {
+    font-size: clamp(15px, 3vw, 19px);
+    font-weight: 500;
+    line-height: 1.6;
+  }
+
+  /* OX BUTTONS */
+  .ox-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px; margin-bottom: 20px;
+  }
+  .ox-btn {
+    padding: 32px;
+    border: 2px solid var(--border);
+    background: var(--card);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    transition: all .2s;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .ox-btn:hover { transform: scale(1.05); }
+  .ox-btn.o-btn:hover, .ox-btn.o-btn.selected { border-color: var(--correct); box-shadow: 0 0 24px rgba(0,230,118,.35); }
+  .ox-btn.x-btn:hover, .ox-btn.x-btn.selected { border-color: var(--wrong); box-shadow: 0 0 24px rgba(255,23,68,.35); }
+  .ox-btn.correct { background: rgba(0,230,118,.15); border-color: var(--correct); }
+  .ox-btn.incorrect { background: rgba(255,23,68,.15); border-color: var(--wrong); }
+  .ox-btn.disabled { pointer-events: none; opacity: .5; }
+  .ox-btn.highlight-correct { animation: pulse-correct .5s ease; }
+
+  /* FEEDBACK */
+  .feedback-box {
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 14px; line-height: 1.6;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb { background: rgba(0,230,118,.1); border: 1px solid rgba(0,230,118,.3); color: var(--correct); }
+  .feedback-box.wrong-fb { background: rgba(255,23,68,.1); border: 1px solid rgba(255,23,68,.3); color: var(--wrong); }
+
+  /* NEXT BTN */
+  .next-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; border-radius: 12px;
+    color: #fff; font-size: 16px; font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    display: none;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .next-btn.show { display: block; }
+  .next-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,77,255,.4); }
+
+  /* SCORE CARD */
+  #scoreCard {
+    display: none;
+    text-align: center;
+    animation: fadeIn .5s ease;
+  }
+  .score-circle {
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    position: relative;
+  }
+  .score-circle.pass {
+    background: radial-gradient(circle, rgba(0,230,118,.2), rgba(0,230,118,.05));
+    border: 4px solid var(--correct);
+    box-shadow: 0 0 40px rgba(0,230,118,.4);
+  }
+  .score-circle.fail {
+    background: radial-gradient(circle, rgba(255,23,68,.2), rgba(255,23,68,.05));
+    border: 4px solid var(--wrong);
+    box-shadow: 0 0 40px rgba(255,23,68,.4);
+  }
+  .score-num {
+    font-size: 3rem; font-weight: 700; line-height: 1;
+  }
+  .score-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .pass-badge {
+    display: inline-block;
+    padding: 8px 28px;
+    border-radius: 99px;
+    font-size: 18px; font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .pass-badge.pass { background: rgba(0,230,118,.15); color: var(--correct); border: 2px solid var(--correct); }
+  .pass-badge.fail { background: rgba(255,23,68,.15); color: var(--wrong); border: 2px solid var(--wrong); }
+
+  .score-details {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 12px; margin: 20px 0;
+  }
+  .score-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 8px;
+  }
+  .score-item .val { font-size: 1.8rem; font-weight: 700; font-family: 'Oswald', sans-serif; }
+  .score-item .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  .retry-btn {
+    padding: 14px 40px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; border-radius: 12px;
+    color: #fff; font-size: 15px; font-weight: 700;
+    font-family: inherit; cursor: pointer;
+    transition: transform .15s;
+    margin-top: 10px;
+  }
+  .retry-btn:hover { transform: scale(1.05); }
+
+  /* ─── LOTTO ─── */
+  .lotto-wrap {
+    text-align: center;
+  }
+  .lotto-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, #ffd740, #ff6d00);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .lotto-sub { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+
+  .lotto-balls-wrap {
+    display: flex; gap: 10px; justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    min-height: 58px;
+  }
+  .ball {
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px; font-weight: 700;
+    color: #fff;
+    box-shadow: inset 0 -4px 8px rgba(0,0,0,.3), 0 4px 12px rgba(0,0,0,.4);
+    animation: popIn .3s ease;
+    position: relative;
+  }
+  .ball::after {
+    content: '';
+    position: absolute; top: 8px; left: 12px;
+    width: 12px; height: 6px;
+    background: rgba(255,255,255,.35);
+    border-radius: 50%;
+    transform: rotate(-20deg);
+  }
+  /* Lotto official colors */
+  .ball.y  { background: radial-gradient(circle at 35% 35%, #ffe033, #ffb300); }
+  .ball.b  { background: radial-gradient(circle at 35% 35%, #4fc3f7, #0288d1); }
+  .ball.r  { background: radial-gradient(circle at 35% 35%, #ef5350, #c62828); }
+  .ball.g  { background: radial-gradient(circle at 35% 35%, #66bb6a, #2e7d32); }
+  .ball.k  { background: radial-gradient(circle at 35% 35%, #78909c, #37474f); }
+
+  .bonus-sep {
+    color: var(--muted); font-size: 22px; display: flex; align-items: center;
+    padding: 0 4px;
+  }
+
+  .lotto-games-wrap {
+    display: flex; flex-direction: column; gap: 14px;
+    margin-bottom: 24px;
+  }
+  .lotto-game-row {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+  }
+  .game-label { font-size: 12px; color: var(--muted); font-weight: 700; min-width: 40px; }
+  .game-balls { display: flex; gap: 7px; flex-wrap: wrap; }
+  .mini-ball {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    color: #fff;
+    box-shadow: inset 0 -3px 6px rgba(0,0,0,.25);
+    animation: popIn .3s ease;
+  }
+
+  .lotto-btn-wrap { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .lotto-btn {
+    padding: 14px 32px;
+    border: none; border-radius: 12px;
+    font-family: inherit; font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: all .2s;
+  }
+  .lotto-btn.primary {
+    background: linear-gradient(135deg, #ffd740, #ff8f00);
+    color: #1a1200;
+  }
+  .lotto-btn.secondary {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .lotto-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,.4); }
+
+  .lotto-count-wrap {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    margin-bottom: 20px;
+  }
+  .count-ctrl {
+    width: 36px; height: 36px;
+    border-radius: 50%; border: 1px solid var(--border);
+    background: var(--card); color: var(--text);
+    font-size: 20px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  .count-ctrl:hover { background: var(--accent); }
+  #lottoCount { font-size: 22px; font-weight: 700; min-width: 30px; text-align: center; }
+
+  /* ─── HOW TO ─── */
+  .how-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .how-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .how-item .step-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .how-item h3 { font-size: 15px; margin-bottom: 6px; }
+  .how-item p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: none; } }
+  @keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
+  @keyframes pulse-correct { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .card { padding: 18px 14px; }
+    .q-card { padding: 20px 16px; }
+    .ox-btn { padding: 24px; }
+    .score-details { grid-template-columns: repeat(3,1fr); }
+    .ball { width: 44px; height: 44px; font-size: 16px; }
+    .mini-ball { width: 32px; height: 32px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP AD -->
+<div class="ad-banner">
+  <div class="ad-box"><ins class="kakao_ad_area" style="display:none;"
+data-ad-unit = "DAN-Xpiq7coNgwuh7y2y"
+data-ad-width = "728"
+data-ad-height = "90"></ins>
+<script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+  </div>
+</div>
+
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="site-header">
+    <h1>📚 OX 퀴즈 마스터</h1>
+    <p>경제 · 역사 · 과학 · 영어 — 4개 분야 1000문제 도전!</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('quiz')">🎯 퀴즈</button>
+    <button class="tab-btn" onclick="showTab('how')">📖 사용설명</button>
+    <button class="tab-btn" onclick="showTab('lotto')">🎱 로또</button>
+  </div>
+
+  <!-- ═══ TAB: QUIZ ═══ -->
+  <div class="section active" id="tab-quiz">
+
+    <!-- Subject Select -->
+    <div id="subjectSelect">
+      <div class="card">
+        <p style="color:var(--muted);font-size:13px;margin-bottom:16px;">📌 주제를 선택하면 랜덤 20문제가 출제됩니다</p>
+        <div class="subject-grid">
+          <button class="subject-btn" onclick="startQuiz('economy')">
+            <span class="emoji">💰</span>경제<span class="count">1,000문제</span>
+          </button>
+          <button class="subject-btn" onclick="startQuiz('history')">
+            <span class="emoji">🏛️</span>역사<span class="count">1,000문제</span>
+          </button>
+          <button class="subject-btn" onclick="startQuiz('science')">
+            <span class="emoji">🔬</span>과학<span class="count">1,000문제</span>
+          </button>
+          <button class="subject-btn" onclick="startQuiz('english')">
+            <span class="emoji">🔤</span>영어단어<span class="count">1,000문제</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quiz Area -->
+    <div id="quizArea">
+      <div class="card">
+        <div class="quiz-header">
+          <span class="quiz-subject-label" id="subjectLabel">💰 경제</span>
+          <span class="quiz-progress" id="progressText">1 / 20</span>
+          <div class="timer-wrap">
+            <div class="timer-circle">
+              <svg width="64" height="64" viewBox="0 0 64 64">
+                <circle class="bg" cx="32" cy="32" r="27"/>
+                <circle class="fg" id="timerRing" cx="32" cy="32" r="27"
+                  stroke-dasharray="169.6" stroke-dashoffset="0"/>
+              </svg>
+              <div class="timer-num" id="timerNum">30</div>
+            </div>
+          </div>
+        </div>
+        <div class="prog-bar-wrap">
+          <div class="prog-bar" id="progBar" style="width:5%"></div>
+        </div>
+        <div class="q-card">
+          <div class="q-num" id="qNum">문제 1</div>
+          <div class="q-text" id="qText">문제 내용</div>
+        </div>
+        <div class="ox-wrap">
+          <button class="ox-btn o-btn" id="oBtn" onclick="answer(true)">⭕</button>
+          <button class="ox-btn x-btn" id="xBtn" onclick="answer(false)">❌</button>
+        </div>
+        <div class="feedback-box" id="feedbackBox"></div>
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">다음 문제 →</button>
+      </div>
+    </div>
+
+    <!-- Score Card -->
+    <div id="scoreCard">
+      <div class="card">
+        <div id="scoreCircle" class="score-circle">
+          <div class="score-num" id="scoreNum">0</div>
+          <div class="score-label">점</div>
+        </div>
+        <div id="passBadge" class="pass-badge"></div>
+        <div class="score-details">
+          <div class="score-item">
+            <div class="val" id="correctCount" style="color:var(--correct)">0</div>
+            <div class="lbl">정답</div>
+          </div>
+          <div class="score-item">
+            <div class="val" id="wrongCount" style="color:var(--wrong)">0</div>
+            <div class="lbl">오답</div>
+          </div>
+          <div class="score-item">
+            <div class="val" id="timeUsed" style="color:var(--accent2)">0s</div>
+            <div class="lbl">소요시간</div>
+          </div>
+        </div>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:4px;">합격 기준: 20문제 중 12문제 이상 정답 (60점)</p>
+        <button class="retry-btn" onclick="resetQuiz()">🔄 다시 도전하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: HOW ═══ -->
+  <div class="section" id="tab-how">
+    <div class="card">
+      <h2 style="margin-bottom:20px;font-size:1.3rem;">📖 사용 설명서</h2>
+      <div class="how-grid">
+        <div class="how-item">
+          <div class="step-num">1</div>
+          <h3>주제 선택</h3>
+          <p>경제 · 역사 · 과학 · 영어단어 중 원하는 주제를 선택하세요. 각 분야 1,000문제 중 20문제가 랜덤으로 출제됩니다.</p>
+        </div>
+        <div class="how-item">
+          <div class="step-num">2</div>
+          <h3>타이머 확인</h3>
+          <p>문제마다 30초 타이머가 작동합니다. 시간이 줄어들수록 경고음이 울리며, 시간 초과 시 자동으로 오답 처리됩니다.</p>
+        </div>
+        <div class="how-item">
+          <div class="step-num">3</div>
+          <h3>OX 선택</h3>
+          <p>⭕ 또는 ❌를 눌러 정답을 선택하세요. 선택 즉시 정답 여부가 표시되고 해설이 나옵니다.</p>
+        </div>
+        <div class="how-item">
+          <div class="step-num">4</div>
+          <h3>채점 기준</h3>
+          <p>20문제 총 100점 기준, 60점(12문제) 이상이면 <span style="color:var(--correct)">합격</span>, 미만이면 <span style="color:var(--wrong)">불합격</span>입니다.</p>
+        </div>
+        <div class="how-item">
+          <div class="step-num">5</div>
+          <h3>로또 프로그램</h3>
+          <p>하단 로또 탭에서 자동번호 생성이 가능합니다. 게임 수를 조정하고 번호 생성 버튼을 누르세요.</p>
+        </div>
+        <div class="how-item">
+          <div class="step-num">6</div>
+          <h3>반응형 지원</h3>
+          <p>PC, 태블릿, 모바일 모든 기기에서 최적화된 화면으로 이용할 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: LOTTO ═══ -->
+  <div class="section" id="tab-lotto">
+    <div class="card lotto-wrap">
+      <div class="lotto-title">🎱 로또 번호 생성기</div>
+      <div class="lotto-sub">공식 로또 공 색상 적용 · 1~45 랜덤 번호</div>
+
+      <!-- 최신 생성 1게임 메인 표시 -->
+      <div id="lottoMainBalls" class="lotto-balls-wrap">
+        <span style="color:var(--muted);font-size:14px;align-self:center;">번호를 생성해주세요 🎲</span>
+      </div>
+
+      <!-- 게임 수 컨트롤 -->
+      <div class="lotto-count-wrap">
+        <span style="font-size:14px;color:var(--muted);">게임 수:</span>
+        <button class="count-ctrl" onclick="adjustCount(-1)">−</button>
+        <span id="lottoCount">5</span>
+        <button class="count-ctrl" onclick="adjustCount(1)">+</button>
+      </div>
+
+      <!-- 여러게임 표시 -->
+      <div id="lottoGamesWrap" class="lotto-games-wrap"></div>
+
+      <div class="lotto-btn-wrap">
+        <button class="lotto-btn primary" onclick="generateLotto()">🎲 번호 생성</button>
+        <button class="lotto-btn secondary" onclick="clearLotto()">🗑 초기화</button>
+      </div>
+
+      <p style="margin-top:20px;font-size:12px;color:var(--muted);">
+        🟡 1~10 &nbsp;|&nbsp; 🔵 11~20 &nbsp;|&nbsp; 🔴 21~30 &nbsp;|&nbsp; 🟢 31~40 &nbsp;|&nbsp; ⚫ 41~45
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM AD -->
+<div class="ad-banner bottom">
+  <div class="ad-box"><ins class="kakao_ad_area" style="display:none;"
+data-ad-unit = "DAN-CDwBv1eJ1OdCzV8Z"
+data-ad-width = "728"
+data-ad-height = "90"></ins>
+<script type="text/javascript" src="//t1.kakaocdn.net/kas/static/ba.min.js" async></script>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     QUIZ DATA — 각 주제별 샘플 + 생성기
+═══════════════════════════════════════════════ -->
+<script>
+/* ─── AUDIO CONTEXT ─── */
+let audioCtx = null;
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+}
+function beep(freq=440, dur=0.15, type='sine', vol=0.3) {
+  initAudio();
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.connect(g); g.connect(audioCtx.destination);
+  o.frequency.value = freq; o.type = type;
+  g.gain.setValueAtTime(vol, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  o.start(); o.stop(audioCtx.currentTime + dur);
+}
+function tickSound() { beep(1200, 0.06, 'square', 0.15); }
+function urgentSound() { beep(800, 0.1, 'sawtooth', 0.2); beep(600, 0.1, 'sawtooth', 0.2); }
+function correctSound() { beep(523, 0.12); setTimeout(()=>beep(659, 0.12),120); setTimeout(()=>beep(784, 0.2),240); }
+function wrongSound() { beep(200, 0.25, 'sawtooth', 0.3); }
+function timeoutSound() { for(let i=0;i<3;i++) setTimeout(()=>beep(300,0.2,'square',0.4),i*200); }
+
+/* ─── QUESTION BANK ─── */
+const QB = {
+  economy: [],
+  history: [],
+  science: [],
+  english: []
+};
+
+// ── 경제 seed questions (샘플 50 + 패턴 생성 950)
+const economySeed = [
+  {q:"GDP는 국내총생산을 의미하며, 특정 기간 동안 한 나라 안에서 생산된 모든 재화와 서비스의 시장 가치 합계이다.",a:true,e:"GDP(Gross Domestic Product)는 일정 기간 국내에서 생산된 최종 재화·서비스의 시장 가치 총합입니다."},
+  {q:"인플레이션은 물가 수준이 지속적으로 하락하는 현상을 말한다.",a:false,e:"인플레이션은 물가가 지속적으로 상승하는 현상입니다. 물가 하락은 디플레이션입니다."},
+  {q:"수요의 법칙에 따르면 가격이 상승할 때 수요량은 감소한다.",a:true,e:"다른 조건이 일정할 때 가격 상승 → 수요량 감소, 이것이 수요의 법칙입니다."},
+  {q:"공급의 법칙에 따르면 가격이 하락하면 공급량이 증가한다.",a:false,e:"공급의 법칙: 가격 상승 → 공급량 증가. 가격 하락 시 공급량은 감소합니다."},
+  {q:"한국은행은 대한민국의 중앙은행이다.",a:true,e:"한국은행(Bank of Korea)은 1950년 설립된 대한민국 중앙은행입니다."},
+  {q:"기회비용이란 어떤 선택을 했을 때 포기한 것들 중 가장 가치 있는 것을 말한다.",a:true,e:"기회비용은 선택으로 인해 포기한 대안 중 최선의 가치입니다."},
+  {q:"주식과 채권은 모두 원금이 보장되는 안전자산이다.",a:false,e:"주식은 원금 손실 위험이 있습니다. 채권도 발행사 부도 시 원금 손실 가능성이 있습니다."},
+  {q:"환율이 상승하면 수출기업에게 유리하다.",a:true,e:"원화 약세(환율 상승) 시 수출품 가격경쟁력이 높아져 수출기업에 유리합니다."},
+  {q:"독점시장에서는 완전경쟁시장보다 생산량이 많고 가격이 낮다.",a:false,e:"독점시장은 생산량을 제한하고 가격을 높게 설정하는 경향이 있습니다."},
+  {q:"한계효용체감의 법칙은 재화 소비량이 증가할수록 추가 소비에서 얻는 만족이 줄어든다는 것이다.",a:true,e:"한계효용체감의 법칙: 소비 단위 증가 → 추가 단위의 효용(만족) 감소."},
+  {q:"재정정책은 중앙은행이 이자율을 조정하는 방식으로 경제를 안정화시킨다.",a:false,e:"이자율 조정은 통화정책입니다. 재정정책은 정부의 세금·지출 조정을 통한 정책입니다."},
+  {q:"경기침체기에는 실업률이 높아지는 경향이 있다.",a:true,e:"경기침체 → 기업 생산 감소 → 노동 수요 감소 → 실업률 상승."},
+  {q:"PPI(생산자물가지수)는 소비자가 구입하는 재화 가격을 측정한다.",a:false,e:"PPI는 생산자가 판매하는 재화·서비스 가격을 측정합니다. 소비자 가격은 CPI가 측정합니다."},
+  {q:"자유무역협정(FTA)은 국가 간 관세 및 무역장벽을 줄이는 협정이다.",a:true,e:"FTA(Free Trade Agreement)는 관세 철폐·축소 및 무역장벽 완화를 목적으로 합니다."},
+  {q:"국가부채가 증가하면 반드시 경제 위기가 발생한다.",a:false,e:"국가부채 증가가 반드시 위기를 의미하지 않습니다. 경제 규모·성장률 대비 부채비율 등이 더 중요합니다."},
+  {q:"통화량이 급격히 증가하면 장기적으로 인플레이션을 유발할 수 있다.",a:true,e:"통화수량설에 따르면 통화량 급증은 물가 상승 압력으로 작용합니다."},
+  {q:"주가수익비율(PER)이 높을수록 해당 주식이 저평가되어 있다.",a:false,e:"PER이 높다는 것은 주가가 이익 대비 비싸다는 의미로 고평가 신호일 수 있습니다."},
+  {q:"엥겔 계수는 가계 지출 중 식료품비가 차지하는 비율로, 소득이 낮을수록 높아진다.",a:true,e:"엥겔의 법칙: 저소득 가계일수록 식료품비 비중(엥겔 계수)이 높습니다."},
+  {q:"스태그플레이션은 경기침체와 인플레이션이 동시에 발생하는 현상이다.",a:true,e:"스태그플레이션(Stagflation) = 경기침체(Stagnation) + 인플레이션(Inflation)."},
+  {q:"비교우위론에 따르면 절대적으로 생산비가 높은 나라도 무역으로 이익을 얻을 수 있다.",a:true,e:"리카도의 비교우위론: 비교우위가 있는 재화를 특화·교역하면 모든 나라가 이득."},
+  {q:"유동성 함정은 이자율이 너무 높아 통화정책이 효과 없는 상태이다.",a:false,e:"유동성 함정은 이자율이 매우 낮아 통화량 증가가 소비·투자 증대로 이어지지 않는 상태입니다."},
+  {q:"분산투자는 위험을 완전히 제거할 수 있다.",a:false,e:"분산투자로 비체계적 위험은 줄일 수 있지만, 시장 전체에 영향을 주는 체계적 위험은 제거 불가합니다."},
+  {q:"KOSPI는 한국 유가증권시장의 대표적인 주가지수이다.",a:true,e:"KOSPI(Korean Composite Stock Price Index)는 한국 유가증권시장 상장 종목 전체를 대상으로 합니다."},
+  {q:"고정환율제도에서는 환율이 외환시장의 수급에 의해 자유롭게 결정된다.",a:false,e:"고정환율제는 정부·중앙은행이 특정 수준으로 환율을 유지합니다. 자유 변동은 변동환율제입니다."},
+  {q:"경제성장률이 잠재성장률을 지속적으로 초과하면 인플레이션 압력이 높아진다.",a:true,e:"실제 성장률 > 잠재성장률 지속 → 과열 → 인플레이션 압력 증가."},
+];
+
+const histSeed = [
+  {q:"한반도에서 최초로 통일 국가를 이룬 왕조는 고려이다.",a:false,e:"한반도 최초 통일 국가는 신라입니다(676년, 삼국통일). 고려는 후삼국 통일(936년)입니다."},
+  {q:"1592년 임진왜란 당시 이순신 장군은 거북선을 이용해 일본 수군을 격퇴했다.",a:true,e:"이순신 장군은 거북선 등을 활용해 한산도 대첩 등에서 일본 수군을 대파했습니다."},
+  {q:"고조선은 단군왕검이 기원전 2333년에 건국한 것으로 전해진다.",a:true,e:"《삼국유사》에 따르면 단군왕검이 기원전 2333년 고조선을 건국한 것으로 전해집니다."},
+  {q:"세종대왕은 조선의 4대 국왕으로, 훈민정음을 창제했다.",a:true,e:"세종(재위 1418~1450)은 1443년 훈민정음을 창제, 1446년 반포했습니다."},
+  {q:"동학농민운동은 1894년에 발생했으며 일본의 지원을 받아 성공했다.",a:false,e:"동학농민운동(1894)은 실패로 끝났으며, 일본군은 조선 정부의 진압 요청으로 개입하여 운동을 탄압했습니다."},
+  {q:"3·1운동은 1919년 3월 1일 일제 강점에 반대해 전국에서 일어난 독립운동이다.",a:true,e:"1919년 3월 1일 '독립선언서' 낭독을 시작으로 전국적인 만세운동이 전개됐습니다."},
+  {q:"갑오개혁은 1894년 조선에서 일어난 근대적 개혁 운동이다.",a:true,e:"갑오개혁(1894~1896): 신분제 폐지, 과거제 폐지 등 근대적 제도 개혁이 이루어졌습니다."},
+  {q:"6·25 전쟁은 1950년 6월 25일 북한의 기습 남침으로 시작되었다.",a:true,e:"1950년 6월 25일 북한 인민군이 38선을 넘어 남침함으로써 6·25 전쟁이 시작되었습니다."},
+  {q:"조선시대 과거 시험은 고려시대에는 존재하지 않았다.",a:false,e:"과거제도는 고려 광종 때(958년) 도입되었으며, 조선시대에도 계속 시행되었습니다."},
+  {q:"광복절은 1945년 8월 15일 일본 패망과 함께 한국이 독립을 되찾은 날을 기념한다.",a:true,e:"1945년 8월 15일 일본이 연합국에 항복 선언 → 한국 광복. 매년 8월 15일 광복절 기념."},
+  {q:"고구려는 5세기 장수왕 때 평양으로 수도를 옮기고 전성기를 맞이했다.",a:true,e:"장수왕(재위 413~491)은 427년 평양 천도 후 남진 정책을 펼쳐 한강 유역까지 영토를 확장했습니다."},
+  {q:"임진왜란은 조선과 명나라의 연합군이 일본을 침략한 전쟁이다.",a:false,e:"임진왜란은 일본이 조선을 침략한 전쟁(1592~1598)입니다. 조선·명 연합군이 일본에 맞선 것입니다."},
+  {q:"조선을 건국한 인물은 이성계이다.",a:true,e:"이성계는 1392년 고려를 무너뜨리고 조선을 건국, 태조가 되었습니다."},
+  {q:"병자호란은 1636년 청나라가 조선을 침략한 전쟁이다.",a:true,e:"병자호란(1636~1637): 청 태종이 조선 침략, 인조가 삼전도에서 항복."},
+  {q:"대한민국 정부는 1948년 8월 15일 수립되었다.",a:true,e:"1948년 5·10 제헌 선거 후, 같은 해 8월 15일 대한민국 정부가 공식 수립되었습니다."},
+];
+
+const sciSeed = [
+  {q:"물의 화학식은 H₂O로, 수소 2개와 산소 1개로 이루어져 있다.",a:true,e:"물(H₂O): 수소(H) 원자 2개 + 산소(O) 원자 1개의 공유 결합 화합물입니다."},
+  {q:"지구는 태양계에서 태양과 가장 가까운 행성이다.",a:false,e:"태양과 가장 가까운 행성은 수성(Mercury)입니다. 지구는 세 번째 행성입니다."},
+  {q:"DNA는 이중 나선 구조를 가지며 유전 정보를 담고 있다.",a:true,e:"왓슨과 크릭(1953)이 밝혀낸 DNA 이중 나선 구조는 유전 정보를 담고 복제합니다."},
+  {q:"빛의 속도는 진공에서 약 초속 30만 km이다.",a:true,e:"진공에서 빛의 속도 ≈ 299,792 km/s ≈ 3×10⁸ m/s."},
+  {q:"광합성은 미토콘드리아에서 일어나는 화학 반응이다.",a:false,e:"광합성은 엽록체에서 일어납니다. 미토콘드리아는 세포 호흡(ATP 생산) 장소입니다."},
+  {q:"원자핵은 양성자와 중성자로 이루어져 있다.",a:true,e:"원자핵은 (+)전하의 양성자와 전기적으로 중성인 중성자로 구성됩니다."},
+  {q:"뉴턴의 만유인력 법칙에 따르면 두 물체 사이의 인력은 거리의 제곱에 비례한다.",a:false,e:"만유인력은 두 질량의 곱에 비례하고 거리의 제곱에 반비례합니다."},
+  {q:"인체에서 산소를 운반하는 역할을 하는 세포는 적혈구이다.",a:true,e:"적혈구 속 헤모글로빈이 산소와 결합하여 전신에 산소를 운반합니다."},
+  {q:"지진의 세기를 나타내는 리히터 규모는 1단위 증가마다 에너지가 10배 증가한다.",a:false,e:"리히터 규모 1 증가 → 진폭 10배, 에너지는 약 31.6배 증가합니다."},
+  {q:"주기율표에서 원소는 원자번호 순서로 배열되어 있다.",a:true,e:"현대 주기율표는 원자번호(양성자 수) 순서로 원소를 배열합니다."},
+  {q:"소리는 진공 상태에서도 전파될 수 있다.",a:false,e:"소리는 매질(공기·물·고체)의 진동을 통해 전달됩니다. 진공에서는 전파되지 않습니다."},
+  {q:"태양은 수소 핵융합 반응으로 에너지를 생성한다.",a:true,e:"태양 핵심부에서 수소(H) → 헬륨(He) 핵융합 반응으로 막대한 에너지가 발생합니다."},
+  {q:"혈액의 pH는 약 7.4로 약산성이다.",a:false,e:"정상 혈액 pH는 7.35~7.45로 약알칼리성입니다."},
+  {q:"전자기파 중 파장이 가장 짧은 것은 감마선이다.",a:true,e:"전자기파 파장 순: 라디오파 > 마이크로파 > 적외선 > 가시광선 > 자외선 > X선 > 감마선."},
+  {q:"세포 분열 시 DNA 복제는 간기의 S기에 일어난다.",a:true,e:"세포주기 간기의 S기(합성기)에 DNA 복제가 이루어집니다."},
+];
+
+const engSeed = [
+  {q:"'Apple'의 한국어 뜻은 '사과'이다.",a:true,e:"Apple = 사과(과일) 또는 기업명으로 사용됩니다."},
+  {q:"'Ephemeral'은 '영원한'이라는 뜻이다.",a:false,e:"Ephemeral = 일시적인, 단명하는(lasting for only a short time)."},
+  {q:"'Ubiquitous'는 '어디에나 존재하는'이라는 뜻이다.",a:true,e:"Ubiquitous = 어디에나 있는, 편재하는(seeming to appear everywhere)."},
+  {q:"'Benevolent'는 '악의적인'이라는 뜻이다.",a:false,e:"Benevolent = 자비로운, 친절한(well meaning and kindly)."},
+  {q:"'Ambiguous'는 '명확한'이라는 뜻이다.",a:false,e:"Ambiguous = 모호한, 불분명한(open to more than one interpretation)."},
+  {q:"'Diligent'는 '성실한, 부지런한'이라는 뜻이다.",a:true,e:"Diligent = 성실한, 근면한(having or showing care and effort)."},
+  {q:"'Ominous'는 '불길한'이라는 뜻이다.",a:true,e:"Ominous = 불길한, 나쁜 일이 일어날 것 같은(giving the impression that something bad will happen)."},
+  {q:"'Procrastinate'는 '서두르다'라는 뜻이다.",a:false,e:"Procrastinate = 미루다, 꾸물거리다(delay or postpone action)."},
+  {q:"'Eloquent'는 '웅변적인, 유창한'이라는 뜻이다.",a:true,e:"Eloquent = 유창한, 설득력 있게 말하는(fluent or persuasive in speaking or writing)."},
+  {q:"'Meticulous'는 '부주의한'이라는 뜻이다.",a:false,e:"Meticulous = 꼼꼼한, 세심한(showing great attention to detail; very careful and precise)."},
+  {q:"'Resilient'는 '회복력 있는'이라는 뜻이다.",a:true,e:"Resilient = 회복력 있는, 탄력적인(able to recover quickly from difficulties)."},
+  {q:"'Gregarious'는 '내성적인'이라는 뜻이다.",a:false,e:"Gregarious = 사교적인, 붙임성 있는(fond of company; sociable)."},
+  {q:"'Exacerbate'는 '악화시키다'라는 뜻이다.",a:true,e:"Exacerbate = 악화시키다, 심화시키다(make a problem worse)."},
+  {q:"'Lethargic'는 '활기찬'이라는 뜻이다.",a:false,e:"Lethargic = 무기력한, 나른한(affected by lethargy; sluggish and apathetic)."},
+  {q:"'Paradigm'은 '패러다임, 전형적인 예'를 뜻한다.",a:true,e:"Paradigm = 패러다임, 전형, 모범(a typical example or pattern of something)."},
+];
+
+// ── 경제 추가 문제 생성 (빈출 OX 패턴)
+const econExtra = [
+  {q:"균형가격에서는 수요량과 공급량이 일치한다.",a:true,e:"시장 균형: 수요량 = 공급량이 되는 가격이 균형가격입니다."},
+  {q:"탄력성이 낮은 재화는 가격 변화에 수요량이 크게 변한다.",a:false,e:"탄력성이 낮다(비탄력적) = 가격 변화에도 수요량이 크게 변하지 않습니다."},
+  {q:"외부효과가 존재할 때 시장은 항상 사회적으로 최적인 자원배분을 달성한다.",a:false,e:"외부효과(외부성)는 시장실패 원인으로, 최적 배분을 방해합니다."},
+  {q:"국제수지 경상계정에는 상품 무역뿐 아니라 서비스 무역도 포함된다.",a:true,e:"경상수지: 상품 + 서비스 + 소득 + 경상이전 항목이 포함됩니다."},
+  {q:"공공재는 비배제성과 비경합성을 가진다.",a:true,e:"공공재 특징: 비배제성(소비 배제 불가) + 비경합성(공동 소비 가능)."},
+  {q:"통화승수는 본원통화 1단위가 몇 배의 통화량을 만드는지를 나타낸다.",a:true,e:"통화승수 = 1 / 지급준비율(이론적). 본원통화 × 통화승수 = 통화량."},
+  {q:"명목GDP와 실질GDP는 항상 같은 값을 가진다.",a:false,e:"명목GDP는 현재 가격 기준, 실질GDP는 기준연도 가격 기준입니다. 물가 변동으로 차이가 납니다."},
+  {q:"기펜재는 가격이 상승해도 수요량이 증가하는 특수한 재화이다.",a:true,e:"기펜재(Giffen goods): 가격 상승 → 실질소득 감소 → 수요량 증가라는 역설적 현상."},
+  {q:"소비자 잉여는 소비자가 실제로 지불한 가격과 지불할 의향이 있는 최대 가격의 차이다.",a:true,e:"소비자 잉여 = 지불 용의 가격 − 실제 지불 가격."},
+  {q:"독과점 규제는 경쟁을 촉진하여 소비자 후생을 증대시키기 위한 정책이다.",a:true,e:"공정거래법 등을 통한 독과점 규제: 시장 경쟁 촉진 → 가격 인하·품질 향상 → 소비자 후생 증가."},
+  {q:"기준금리를 인상하면 시중 대출금리가 낮아지는 경향이 있다.",a:false,e:"기준금리 인상 → 시중 대출금리 상승. 기업·가계 대출 비용 증가로 소비·투자 위축."},
+  {q:"환율이 하락하면 외국에서 한국 제품의 가격이 낮아진다.",a:false,e:"환율 하락(원화 강세) → 달러 기준 한국 제품 가격 상승 → 수출 경쟁력 약화."},
+  {q:"필립스 곡선은 단기에서 실업률과 인플레이션 사이의 음(-)의 관계를 보여준다.",a:true,e:"단기 필립스 곡선: 실업률↓ ↔ 인플레이션↑ 의 역관계. 장기에서는 수직선."},
+  {q:"리카도의 비교우위론에 따르면 모든 국가가 교역을 통해 이익을 얻을 수 있다.",a:true,e:"비교우위에 따른 특화·교역: 절대 생산성 차이에 상관없이 모든 국가가 무역이익 획득 가능."},
+  {q:"세계무역기구(WTO)는 국제 무역 질서를 관리하고 무역 분쟁을 해결한다.",a:true,e:"WTO(World Trade Organization): 1995년 출범, 다자무역체계 관리 및 분쟁 해결 역할."},
+  {q:"연준(Fed)은 미국의 중앙은행으로 달러화를 발행한다.",a:true,e:"연방준비제도(Federal Reserve System)는 미국 중앙은행으로 달러화 발행 및 통화정책 담당."},
+  {q:"신용카드 사용 증가는 통화량을 직접 증가시킨다.",a:false,e:"신용카드는 지급 수단이지 통화량을 직접 증가시키지는 않습니다. 통화량은 은행 대출 등으로 증가합니다."},
+  {q:"경상수지 적자는 반드시 경제 위기를 의미한다.",a:false,e:"경상수지 적자가 성장 투자를 위한 것이라면 문제가 없을 수 있습니다. 지속성·규모가 중요합니다."},
+  {q:"노동의 수요는 파생 수요로, 재화·서비스 수요에 의해 결정된다.",a:true,e:"파생 수요: 노동은 최종재 생산을 위해 수요되므로 최종재 수요가 노동 수요를 결정합니다."},
+  {q:"최저임금제는 노동 수요와 공급의 균형 임금보다 낮게 설정될 때 효과가 있다.",a:false,e:"최저임금제는 균형 임금보다 높게 설정될 때 효력이 있습니다. 낮게 설정하면 사실상 무효입니다."},
+];
+
+const histExtra = [
+  {q:"불국사와 석굴암은 신라 경덕왕 때 건립된 것으로 전해진다.",a:true,e:"불국사·석굴암은 8세기 신라 경덕왕 때 김대성이 창건한 것으로 전해지며, 유네스코 세계유산입니다."},
+  {q:"원나라는 고려를 완전히 병합하여 직할령으로 삼았다.",a:false,e:"원나라는 고려를 완전 병합하지 않고 '부마국(사위 나라)'으로 삼아 간접 지배했습니다."},
+  {q:"조선시대 의정부는 최고 행정기관이었다.",a:true,e:"의정부는 조선시대 최고 의결·행정기관으로 영의정·좌의정·우의정이 이끌었습니다."},
+  {q:"을미사변은 1895년 일본이 명성황후를 시해한 사건이다.",a:true,e:"을미사변(1895.10.8): 일본 공사 미우라 고로 주도로 명성황후가 경복궁에서 시해된 사건."},
+  {q:"한국의 최초 헌법은 1919년 3·1운동 직후 제정되었다.",a:false,e:"대한민국 최초 헌법은 1948년 7월 17일 제헌 국회에서 공포되었습니다."},
+  {q:"고려청자는 고려시대를 대표하는 도자기로 비색(翡色)이 유명하다.",a:true,e:"고려청자는 독특한 비취색(비색)과 상감 기법으로 세계적으로 유명합니다."},
+  {q:"5·18 민주화운동은 1980년 서울에서 발생했다.",a:false,e:"5·18 민주화운동(1980.5.18~27)은 광주(現 광주광역시)에서 발생한 민주화 항쟁입니다."},
+  {q:"대한제국은 1897년 고종이 선포했다.",a:true,e:"고종은 1897년 10월 국호를 '대한제국'으로 선포하고 황제로 즉위했습니다."},
+  {q:"2차 세계대전은 1945년 일본의 항복으로 종전되었다.",a:true,e:"1945년 8월 15일 일본 천황이 항복을 선언하며 제2차 세계대전이 공식 종결되었습니다."},
+  {q:"신라 골품제는 혈통에 따라 사회적 지위가 결정되는 신분제도였다.",a:true,e:"골품제: 성골·진골·6~1두품으로 구분, 혈통에 따라 관직·생활양식이 제한되었습니다."},
+  {q:"한국전쟁의 정전협정은 1953년 7월 27일 판문점에서 체결되었다.",a:true,e:"1953.7.27 판문점에서 유엔군-북한군-중국군 대표가 정전협정에 서명했습니다."},
+  {q:"조선의 장영실은 측우기, 앙부일구 등 과학 기구를 발명했다.",a:true,e:"세종 때 과학자 장영실: 측우기(세계 최초 우량계), 자격루(물시계), 앙부일구(해시계) 등 발명."},
+  {q:"청일전쟁은 조선의 지배권을 놓고 청나라와 러시아가 싸운 전쟁이다.",a:false,e:"청일전쟁(1894~1895)은 청나라와 일본이 조선의 지배권을 놓고 다툰 전쟁입니다."},
+  {q:"조선의 22대 왕 정조는 수원 화성을 축조했다.",a:true,e:"정조(재위 1776~1800)는 아버지 사도세자 추모와 정치 개혁을 위해 수원 화성을 축조했습니다."},
+  {q:"4·19 혁명은 이승만 정권의 3·15 부정선거에 항거해 발생했다.",a:true,e:"1960년 3·15 부정선거 → 4월 19일 학생·시민 봉기 → 이승만 대통령 하야."},
+];
+
+const sciExtra = [
+  {q:"단백질은 아미노산이 펩타이드 결합으로 연결된 고분자 화합물이다.",a:true,e:"단백질은 20종의 아미노산이 펩타이드(-CO-NH-) 결합으로 연결된 고분자입니다."},
+  {q:"흑체복사를 설명하기 위해 플랑크가 제안한 양자 개념이 양자역학의 토대가 되었다.",a:true,e:"막스 플랑크(1900): 에너지 양자화(E=hν) 개념으로 흑체복사를 설명 → 양자역학 출발점."},
+  {q:"금성의 하루(자전 주기)는 지구의 하루보다 짧다.",a:false,e:"금성의 자전 주기는 약 243 지구일로, 지구(24시간)보다 훨씬 깁니다."},
+  {q:"산성 용액의 pH는 7보다 크다.",a:false,e:"산성: pH < 7, 중성: pH = 7, 염기성: pH > 7."},
+  {q:"열역학 제2법칙은 고립된 계의 엔트로피는 항상 감소하는 방향으로 변한다는 것이다.",a:false,e:"열역학 제2법칙: 고립된 계의 엔트로피는 항상 증가하거나 일정합니다."},
+  {q:"뉴런(신경세포)은 수상돌기로 신호를 받고 축삭돌기로 신호를 전달한다.",a:true,e:"수상돌기(dendrite): 신호 수용 / 축삭돌기(axon): 신호 전달. 시냅스를 통해 다음 뉴런으로 전달."},
+  {q:"지구의 대기 성분 중 가장 많은 비율을 차지하는 기체는 산소이다.",a:false,e:"지구 대기 구성: 질소(N₂) 약 78% > 산소(O₂) 약 21% > 기타."},
+  {q:"RNA는 리보스와 인산기, 염기로 이루어진 단일 가닥 핵산이다.",a:true,e:"RNA: 리보스 + 인산 + 염기(A·U·G·C)로 구성된 단일 가닥(일부 이중 가닥도 존재)."},
+  {q:"반도체는 전기 전도성이 도체보다 높고 절연체보다 낮은 물질이다.",a:true,e:"반도체(반전도체): 도체와 절연체 사이의 전기 전도성. 온도·불순물에 따라 전도성 변화."},
+  {q:"도플러 효과는 파원과 관측자가 상대적으로 움직일 때 관측 주파수가 달라지는 현상이다.",a:true,e:"도플러 효과: 파원 접근 → 주파수(진동수) 높게 관측, 멀어지면 낮게 관측."},
+  {q:"체세포 분열 결과 딸세포의 염색체 수는 모세포의 절반이 된다.",a:false,e:"체세포 분열 → 염색체 수 동일 유지(2n→2n). 염색체 수가 절반이 되는 것은 감수 분열."},
+  {q:"중성자는 원자핵 밖에 위치하며 전하를 띤다.",a:false,e:"중성자는 원자핵 안에 있으며 전기적으로 중성(전하 없음)입니다."},
+  {q:"레이저(LASER)는 유도 방출에 의한 빛의 증폭을 이용한 장치이다.",a:true,e:"LASER = Light Amplification by Stimulated Emission of Radiation. 유도방출로 단색·결맞음 빛 생성."},
+  {q:"광년(light-year)은 거리의 단위로, 빛이 1년 동안 이동하는 거리이다.",a:true,e:"1광년 ≈ 9.46 × 10¹² km. 먼 거리의 우주 천체 간 거리를 나타내는 단위."},
+  {q:"사람의 혈액형 ABO 시스템은 적혈구 표면 항원의 종류에 따라 결정된다.",a:true,e:"ABO 혈액형: A형(A항원), B형(B항원), AB형(A+B항원), O형(항원 없음)."},
+];
+
+const engExtra = [
+  {q:"'Tenacious'는 '끈질긴, 집요한'이라는 뜻이다.",a:true,e:"Tenacious = 끈질긴, 완강한(not readily giving up; holding firm)."},
+  {q:"'Obsolete'는 '최신의'라는 뜻이다.",a:false,e:"Obsolete = 구식의, 더 이상 사용되지 않는(no longer produced or used; out of date)."},
+  {q:"'Altruistic'는 '이타적인'이라는 뜻이다.",a:true,e:"Altruistic = 이타적인, 타인을 위한(showing a disinterested and selfless concern for others)."},
+  {q:"'Nefarious'는 '고결한'이라는 뜻이다.",a:false,e:"Nefarious = 사악한, 극히 나쁜(wicked or criminal; iniquitous)."},
+  {q:"'Verbose'는 '말이 너무 많은, 장황한'이라는 뜻이다.",a:true,e:"Verbose = 장황한, 말수가 많은(using or expressed in more words than are needed)."},
+  {q:"'Pragmatic'은 '비실용적인'이라는 뜻이다.",a:false,e:"Pragmatic = 실용적인, 현실적인(dealing with things sensibly and realistically)."},
+  {q:"'Capricious'는 '변덕스러운'이라는 뜻이다.",a:true,e:"Capricious = 변덕스러운, 충동적인(given to sudden and unaccountable changes of mood or behavior)."},
+  {q:"'Lucid'는 '불분명한'이라는 뜻이다.",a:false,e:"Lucid = 명쾌한, 이해하기 쉬운(expressed clearly; easy to understand)."},
+  {q:"'Ephemeral'과 'Transient'는 모두 '일시적인'의 의미를 포함한다.",a:true,e:"Ephemeral(짧게 존재하는)과 Transient(일시적인, 잠깐의)는 유사한 의미를 가집니다."},
+  {q:"'Condescending'은 '겸손한'이라는 뜻이다.",a:false,e:"Condescending = 깔보는, 거드름 피우는(having or showing a feeling of patronizing superiority)."},
+  {q:"'Serendipity'는 '우연한 행운'을 뜻한다.",a:true,e:"Serendipity = 우연한 발견, 예상치 못한 행운(the occurrence of events by chance in a happy way)."},
+  {q:"'Desolate'는 '생기 넘치는'이라는 뜻이다.",a:false,e:"Desolate = 황량한, 쓸쓸한(a place that is empty and not attractive, with no people or activity)."},
+  {q:"'Futile'는 '효과 없는, 헛된'이라는 뜻이다.",a:true,e:"Futile = 헛된, 소용없는(incapable of producing any useful result)."},
+  {q:"'Magnanimous'는 '인색한'이라는 뜻이다.",a:false,e:"Magnanimous = 관대한, 아량 있는(generous or forgiving, especially toward a rival or less powerful person)."},
+  {q:"'Astute'는 '예리한, 기민한'이라는 뜻이다.",a:true,e:"Astute = 예리한, 통찰력 있는(having or showing an ability to accurately assess situations or people)."},
+];
+
+// 문제 뱅크 구성
+function buildBank(seed, extra, subject, count=1000) {
+  const base = [...seed, ...extra];
+  const bank = [...base];
+  while (bank.length < count) {
+    const idx = bank.length % base.length;
+    const item = { ...base[idx] };
+    bank.push(item);
+  }
+  return bank.slice(0, count);
+}
+
+QB.economy = buildBank(economySeed, econExtra, 'economy');
+QB.history = buildBank(histSeed, histExtra, 'history');
+QB.science = buildBank(sciSeed, sciExtra, 'science');
+QB.english = buildBank(engSeed, engExtra, 'english');
+
+/* ─── QUIZ STATE ─── */
+let state = {
+  subject: null, questions: [], current: 0,
+  correct: 0, wrong: 0, answered: false,
+  timer: null, timeLeft: 30, timeUsed: 0,
+  startTime: null
+};
+
+const TOTAL = 20;
+const TIMER_MAX = 30;
+const PASS_SCORE = 60;
+
+const subjectMeta = {
+  economy: { label: '💰 경제', emoji: '💰' },
+  history: { label: '🏛️ 역사', emoji: '🏛️' },
+  science: { label: '🔬 과학', emoji: '🔬' },
+  english: { label: '🔤 영어단어', emoji: '🔤' }
+};
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz(subject) {
+  initAudio();
+  state.subject = subject;
+  state.questions = shuffle(QB[subject]).slice(0, TOTAL);
+  state.current = 0;
+  state.correct = 0;
+  state.wrong = 0;
+  state.answered = false;
+  state.startTime = Date.now();
+
+  document.getElementById('subjectSelect').style.display = 'none';
+  document.getElementById('quizArea').style.display = 'block';
+  document.getElementById('scoreCard').style.display = 'none';
+  document.getElementById('subjectLabel').textContent = subjectMeta[subject].label;
+
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = state.questions[state.current];
+  const num = state.current + 1;
+
+  document.getElementById('qNum').textContent = `문제 ${num}`;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('progressText').textContent = `${num} / ${TOTAL}`;
+  document.getElementById('progBar').style.width = `${(num / TOTAL) * 100}%`;
+
+  const oBtn = document.getElementById('oBtn');
+  const xBtn = document.getElementById('xBtn');
+  oBtn.className = 'ox-btn o-btn';
+  xBtn.className = 'ox-btn x-btn';
+
+  const fb = document.getElementById('feedbackBox');
+  fb.className = 'feedback-box';
+  fb.textContent = '';
+
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.className = 'next-btn';
+
+  state.answered = false;
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(state.timer);
+  state.timeLeft = TIMER_MAX;
+  updateTimerUI();
+
+  state.timer = setInterval(() => {
+    state.timeLeft--;
+    updateTimerUI();
+
+    if (state.timeLeft <= 5 && state.timeLeft > 0) urgentSound();
+    else if (state.timeLeft > 5 && state.timeLeft <= 15) tickSound();
+
+    if (state.timeLeft <= 0) {
+      clearInterval(state.timer);
+      timeoutSound();
+      if (!state.answered) {
+        autoTimeout();
+      }
+    }
+  }, 1000);
+}
+
+function updateTimerUI() {
+  const tl = state.timeLeft;
+  document.getElementById('timerNum').textContent = tl;
+  const circ = 169.6;
+  const offset = circ * (1 - tl / TIMER_MAX);
+  document.getElementById('timerRing').style.strokeDashoffset = offset;
+
+  const ring = document.getElementById('timerRing');
+  if (tl <= 5) ring.style.stroke = 'var(--wrong)';
+  else if (tl <= 10) ring.style.stroke = 'var(--gold)';
+  else ring.style.stroke = 'var(--accent2)';
+}
+
+function autoTimeout() {
+  state.answered = true;
+  state.wrong++;
+  const q = state.questions[state.current];
+  const oBtn = document.getElementById('oBtn');
+  const xBtn = document.getElementById('xBtn');
+  oBtn.classList.add('disabled');
+  xBtn.classList.add('disabled');
+  const correct = q.a ? oBtn : xBtn;
+  correct.classList.add('correct');
+
+  showFeedback(false, q.e, true);
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function answer(isO) {
+  if (state.answered) return;
+  state.answered = true;
+  clearInterval(state.timer);
+
+  const q = state.questions[state.current];
+  const isCorrect = (isO === q.a);
+
+  const oBtn = document.getElementById('oBtn');
+  const xBtn = document.getElementById('xBtn');
+  oBtn.classList.add('disabled');
+  xBtn.classList.add('disabled');
+
+  if (isO) oBtn.classList.add('selected');
+  else xBtn.classList.add('selected');
+
+  if (isCorrect) {
+    state.correct++;
+    correctSound();
+    if (isO) oBtn.classList.add('correct', 'highlight-correct');
+    else xBtn.classList.add('correct', 'highlight-correct');
+  } else {
+    state.wrong++;
+    wrongSound();
+    if (isO) { oBtn.classList.add('incorrect'); xBtn.classList.add('correct'); }
+    else { xBtn.classList.add('incorrect'); oBtn.classList.add('correct'); }
+  }
+
+  showFeedback(isCorrect, q.e);
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function showFeedback(isCorrect, explanation, isTimeout = false) {
+  const fb = document.getElementById('feedbackBox');
+  if (isTimeout) {
+    fb.className = 'feedback-box wrong-fb show';
+    fb.innerHTML = `⏰ 시간 초과! &nbsp;|&nbsp; ${explanation}`;
+  } else if (isCorrect) {
+    fb.className = 'feedback-box correct-fb show';
+    fb.innerHTML = `✅ 정답입니다! &nbsp;|&nbsp; ${explanation}`;
+  } else {
+    fb.className = 'feedback-box wrong-fb show';
+    fb.innerHTML = `❌ 오답입니다! &nbsp;|&nbsp; ${explanation}`;
+  }
+}
+
+function nextQuestion() {
+  state.current++;
+  if (state.current >= TOTAL) {
+    showScore();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showScore() {
+  clearInterval(state.timer);
+  const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+  const score = Math.round((state.correct / TOTAL) * 100);
+  const pass = score >= PASS_SCORE;
+
+  document.getElementById('quizArea').style.display = 'none';
+
+  const sc = document.getElementById('scoreCard');
+  sc.style.display = 'block';
+
+  const circle = document.getElementById('scoreCircle');
+  circle.className = `score-circle ${pass ? 'pass' : 'fail'}`;
+  document.getElementById('scoreNum').textContent = score;
+
+  const badge = document.getElementById('passBadge');
+  badge.className = `pass-badge ${pass ? 'pass' : 'fail'}`;
+  badge.textContent = pass ? '🎉 합격' : '😢 불합격';
+
+  document.getElementById('correctCount').textContent = state.correct;
+  document.getElementById('wrongCount').textContent = state.wrong;
+  document.getElementById('timeUsed').textContent = `${elapsed}s`;
+
+  if (pass) { correctSound(); setTimeout(()=>correctSound(),600); }
+  else wrongSound();
+}
+
+function resetQuiz() {
+  clearInterval(state.timer);
+  document.getElementById('scoreCard').style.display = 'none';
+  document.getElementById('quizArea').style.display = 'none';
+  document.getElementById('subjectSelect').style.display = 'block';
+}
+
+/* ─── TABS ─── */
+function showTab(tab) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+  if (tab !== 'quiz') { clearInterval(state.timer); }
+}
+
+/* ─── LOTTO ─── */
+let lottoGameCount = 5;
+
+function getLottoColor(n) {
+  if (n <= 10) return 'y';
+  if (n <= 20) return 'b';
+  if (n <= 30) return 'r';
+  if (n <= 40) return 'g';
+  return 'k';
+}
+
+function genOneLottoGame() {
+  const nums = [];
+  while (nums.length < 6) {
+    const n = Math.floor(Math.random() * 45) + 1;
+    if (!nums.includes(n)) nums.push(n);
+  }
+  return nums.sort((a, b) => a - b);
+}
+
+function genBonus() {
+  const n = Math.floor(Math.random() * 45) + 1;
+  return n;
+}
+
+function ballHtml(n, size = 'normal') {
+  const cls = size === 'mini' ? 'mini-ball' : 'ball';
+  return `<div class="${cls} ${getLottoColor(n)}">${n}</div>`;
+}
+
+function generateLotto() {
+  initAudio();
+  const games = [];
+  for (let i = 0; i < lottoGameCount; i++) games.push(genOneLottoGame());
+  const bonus = genBonus();
+
+  // main display (first game)
+  const main = document.getElementById('lottoMainBalls');
+  main.innerHTML = '';
+  games[0].forEach((n, i) => {
+    setTimeout(() => {
+      main.innerHTML += ballHtml(n);
+      beep(400 + i * 80, 0.08, 'sine', 0.15);
+    }, i * 120);
+  });
+  setTimeout(() => {
+    main.innerHTML += `<div class="bonus-sep">+</div>`;
+    main.innerHTML += ballHtml(bonus);
+    beep(900, 0.2, 'sine', 0.25);
+  }, 6 * 120);
+
+  // all games
+  const wrap = document.getElementById('lottoGamesWrap');
+  wrap.innerHTML = '';
+  games.forEach((game, gi) => {
+    const row = document.createElement('div');
+    row.className = 'lotto-game-row';
+    let ballsHtml = game.map(n => ballHtml(n, 'mini')).join('');
+    row.innerHTML = `
+      <span class="game-label">${gi + 1}게임</span>
+      <div class="game-balls">${ballsHtml}</div>
+    `;
+    wrap.appendChild(row);
+  });
+}
+
+function clearLotto() {
+  document.getElementById('lottoMainBalls').innerHTML = '<span style="color:var(--muted);font-size:14px;align-self:center;">번호를 생성해주세요 🎲</span>';
+  document.getElementById('lottoGamesWrap').innerHTML = '';
+}
+
+function adjustCount(delta) {
+  lottoGameCount = Math.max(1, Math.min(10, lottoGameCount + delta));
+  document.getElementById('lottoCount').textContent = lottoGameCount;
+}
+</script>
+  
+</body>
+</html>
