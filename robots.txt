@@ -1,4 +1,3 @@
 User-agent: *
-Disallow: /
-User-agent: Yeti
 Allow: /
+Sitemap: https://quiz.oins1.co.kr/sitemap.xml
